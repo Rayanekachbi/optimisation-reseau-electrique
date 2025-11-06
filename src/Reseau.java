@@ -73,6 +73,31 @@ public class Reseau {
 
     }
 
+    public String suppConnexion(String nom1, String nom2) {
+        Maison m = null;
+        Generateur g = null;
+
+        if (this.maisons.containsKey(nom1) && this.generateurs.containsKey(nom2)) {
+            m = this.maisons.get(nom1);
+            g = this.generateurs.get(nom2);
+        } else if (this.maisons.containsKey(nom2) && this.generateurs.containsKey(nom1)) {
+            m = this.maisons.get(nom2);
+            g = this.generateurs.get(nom1);
+        }
+
+        if (m == null || g == null) {
+            return "Erreur: Maison ou générateur introuvable. Vérifiez que '" + nom1 + "' et '" + nom2 + "' existent.";
+        }
+
+        boolean isSupprime = connexions.remove(m, g);
+
+        if(isSupprime)
+            return "La connexion entre la maison "+m.getNom()+" et le generateur "+g.getNom()+" a ete supprimee avec succes.";
+        else
+            return "La connexion entre "+m.getNom()+" et "+g.getNom()+" n'existe pas.";
+        
+    }
+
     public java.util.List<String> validerReseau() {
         java.util.List<String> erreurs = new java.util.ArrayList<>();
         // La contrainte "une maison est connectée à un seul générateur au maximum"
@@ -179,63 +204,65 @@ public class Reseau {
     }
 
     public void afficherReseau() {
-    System.out.println("\n==================================");
-    System.out.println("||     ETAT ACTUEL DU RÉSEAU    ||");
-    System.out.println("==================================");
+        System.out.println("\n==================================");
+        System.out.println("||     ETAT ACTUEL DU RÉSEAU    ||");
+        System.out.println("==================================");
 
-    //Affichage des Maisons
-    System.out.println("--- Maisons (" + this.maisons.size() + ") ---");
-    for (Maison m : this.maisons.values()) {
-        Generateur gConnecte = this.connexions.get(m);
-        String statut = "Connectée à " + gConnecte.getNom();
-        
-        System.out.printf("- %s : %s (%d kW) | Statut: %s\n",
-                m.getNom(), m.getConsommation().toString(), m.getConsommation().getDemandeKw(), statut);
-    }
+        // Affichage des Maisons
+        System.out.println("--- Maisons (" + this.maisons.size() + ") ---");
+        for (Maison m : this.maisons.values()) {
+            Generateur gConnecte = this.connexions.get(m);
+            String statut = "Connectée à " + gConnecte.getNom();
 
-    //Affichage des Générateurs
-    System.out.println("\n--- Générateurs (" + this.generateurs.size() + ") ---");
-    for (Generateur g : this.generateurs.values()) {
-        double charge = calculerChargeActuelle(g);
-        double taux = calculerTauxUtilisation(g);
-
-        String etat;
-        if (taux > 1.0) {
-            etat = " [SURCHARGE]";
-        } else {
-            etat = " [OK]";
+            System.out.printf("- %s : %s (%d kW) | Statut: %s\n",
+                    m.getNom(), m.getConsommation().toString(), m.getConsommation().getDemandeKw(), statut);
         }
 
-        // Utilisation de printf c'est largement mieu que ça
-        System.out.println("- " + g.getNom() + 
-                   " : Capacité " + String.format("%.0f", g.getCapaciteMaximale()) + " kW" +
-                   " | Charge " + String.format("%.0f", charge) + " kW" +
-                   " | Taux Utilisation: " + String.format("%.2f", taux * 100) + "%" + 
-                   etat);
-        //System.out.printf("- %s : Capacité %.0f kW | Charge %.0f kW | Taux Utilisation: %.2f%%%s\n",
-        //g.getNom(), g.getCapaciteMaximale(), charge, taux * 100, etat);
-    }
+        // Affichage des Générateurs
+        System.out.println("\n--- Générateurs (" + this.generateurs.size() + ") ---");
+        for (Generateur g : this.generateurs.values()) {
+            double charge = calculerChargeActuelle(g);
+            double taux = calculerTauxUtilisation(g);
 
-    //Affichage des Connexions
-    System.out.println("\n--- Détail des Connexions ---");
-    for (Generateur g : this.generateurs.values()) {
-        System.out.print("-> Générateur " + g.getNom() + " alimente: ");
+            String etat;
+            if (taux > 1.0) {
+                etat = " [SURCHARGE]";
+            } else {
+                etat = " [OK]";
+            }
 
-        java.util.List<String> maisonsConnectees = new java.util.ArrayList<>();
-        for (Map.Entry<Maison, Generateur> entry : this.connexions.entrySet()) {
-            if (entry.getValue().equals(g)) {
-                maisonsConnectees.add(entry.getKey().getNom());
+            // Utilisation de printf c'est largement mieu que ça
+            System.out.println("- " + g.getNom() +
+                    " : Capacité " + String.format("%.0f", g.getCapaciteMaximale()) + " kW" +
+                    " | Charge " + String.format("%.0f", charge) + " kW" +
+                    " | Taux Utilisation: " + String.format("%.2f", taux * 100) + "%" +
+                    etat);
+            // System.out.printf("- %s : Capacité %.0f kW | Charge %.0f kW | Taux
+            // Utilisation: %.2f%%%s\n",
+            // g.getNom(), g.getCapaciteMaximale(), charge, taux * 100, etat);
+        }
+
+        // Affichage des Connexions
+        System.out.println("\n--- Détail des Connexions ---");
+        for (Generateur g : this.generateurs.values()) {
+            System.out.print("-> Générateur " + g.getNom() + " alimente: ");
+
+            java.util.List<String> maisonsConnectees = new java.util.ArrayList<>();
+            for (Map.Entry<Maison, Generateur> entry : this.connexions.entrySet()) {
+                if (entry.getValue().equals(g)) {
+                    maisonsConnectees.add(entry.getKey().getNom());
+                }
+            }
+
+            if (maisonsConnectees.isEmpty()) {
+                System.out.println("Aucune maison connectée.");
+            } else {
+                System.out.println(String.join(", ", maisonsConnectees));
+                // join sert à assembler tous les éléments d'une liste ou d'un tableau en une
+                // seule chaîne de caractères,
+                // en insérant un séparateur spécifique entre chaque élément
             }
         }
-
-        if (maisonsConnectees.isEmpty()) {
-            System.out.println("Aucune maison connectée.");
-        } else {
-            System.out.println(String.join(", ", maisonsConnectees));
-            //join sert à assembler tous les éléments d'une liste ou d'un tableau en une seule chaîne de caractères, 
-            //en insérant un séparateur spécifique entre chaque élément
-        }
+        System.out.println("==================================");
     }
-    System.out.println("==================================");
-}
 }

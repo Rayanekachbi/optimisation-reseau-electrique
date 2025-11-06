@@ -35,7 +35,8 @@ public class InterfaceTexte {
             System.out.println("1) Ajouter/Mettre à jour un générateur");
             System.out.println("2) Ajouter/Mettre à jour une maison");
             System.out.println("3) Ajouter/Modifier une connexion (Maison <-> Générateur)");
-            System.out.println("4) Finaliser la configuration et passer à la gestion");
+            System.out.println("4) Supprimer une connexion (Maison <-> Générateur)");
+            System.out.println("5) Finaliser la configuration et passer à la gestion");
             System.out.print("Votre choix: ");
 
             try {
@@ -53,10 +54,13 @@ public class InterfaceTexte {
                         ajouterConnexion();
                         break;
                     case 4:
+                        supprimerConnexion();
+                        break;
+                    case 5:
                         configurationFinie = finaliserConfiguration();
                         break;
                     default:
-                        System.out.println("Choix invalide. Veuillez saisir un nombre entre 1 et 4.");
+                        System.out.println("Choix invalide. Veuillez saisir un nombre entre 1 et 5.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Erreur: Veuillez entrer un nombre entier pour le choix du menu.");
@@ -67,7 +71,7 @@ public class InterfaceTexte {
     }
 
     private void ajouterGenerateur() {
-        System.out.print("Saisissez le nom du générateur et sa capacité maximale (e.g., G1 60): ");
+        System.out.print("Saisissez le nom du générateur et sa capacité maximale (format : G1 60): ");
         String ligne = scanner.nextLine().trim();
         String[] parties = ligne.split(" ");
 
@@ -88,7 +92,7 @@ public class InterfaceTexte {
 
     private void ajouterMaison() {
         System.out.print(
-                "Saisissez le nom de la maison et son type de consommation (e.g., M1 NORMAL). Types: BASSE, NORMAL, FORTE: ");
+                "Saisissez le nom de la maison et son type de consommation (format : M1 NORMAL). Types: BASSE, NORMAL, FORTE: ");
         String ligne = scanner.nextLine().trim();
         String[] parties = ligne.split(" ");
 
@@ -112,7 +116,7 @@ public class InterfaceTexte {
     }
 
     private void ajouterConnexion() {
-        System.out.print("Saisissez la connexion (e.g., M1 G1 ou G1 M1): ");
+        System.out.print("Saisissez la connexion (format: M1 G1 ou G1 M1): ");
         String ligne = scanner.nextLine().trim();
         String[] parties = ligne.split(" ");
 
@@ -128,13 +132,29 @@ public class InterfaceTexte {
         System.out.println(resultat);
     }
 
+    private void supprimerConnexion(){
+        System.out.print("Saisissez la connexion à supprimer (format: M1 G1 ou G1 M1): ");
+        String ligne = scanner.nextLine().trim();
+        String[] parties = ligne.split(" ");
+
+        if (parties.length != 2) {
+            System.out.println("Erreur: Format incorrect. Format attendu: [Entité1] [Entité2].");
+            return;
+        }
+
+        String nom1 = parties[0];
+        String nom2 = parties[1];
+
+        String resultat = reseau.suppConnexion(nom1, nom2);
+        System.out.println(resultat);
+    }
     private void modifierConnexion() {
 
         System.out.print("Veuillez saisir la connexion que vous souhaitez modifier : ");
         //trim sert a retirer les espaces au debut et a la fin comme sur " g1 m1 "
         String ligneAncienne = scanner.nextLine().trim();
 
-        //
+        //<
         // Rajouter une methode dans la classe reseau qui sert à vérifier si une connexion existe
         // cela servira a traiter le cas ou l'on veut modifier une connexion saisis ici mais qui n'existe pas 
         //
