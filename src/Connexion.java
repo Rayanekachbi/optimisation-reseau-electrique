@@ -7,7 +7,7 @@ public class Connexion {
         this.generateur = generateur;
     }
 
-    // Getters, Setters
+    // Getters
     public Maison getMaison() {
         return maison;
     }

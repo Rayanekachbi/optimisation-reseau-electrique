@@ -12,12 +12,14 @@ public class InterfaceTexte {
         this.scanner = new Scanner(System.in);
     }
 
+    //main !!!
     public static void main(String[] args) {
         InterfaceTexte app = new InterfaceTexte();
         //Lancement du prog
         app.demarrer();
     }
 
+    //methode demarrer
     public void demarrer() {
         System.out.println("==============================================");
         System.out.println("|| Programme de Gestion de Réseau Électrique ||");
@@ -154,15 +156,17 @@ public class InterfaceTexte {
         //trim sert a retirer les espaces au debut et a la fin comme sur " g1 m1 "
         String ligneAncienne = scanner.nextLine().trim();
 
-        //<
-        // Rajouter une methode dans la classe reseau qui sert à vérifier si une connexion existe
-        // cela servira a traiter le cas ou l'on veut modifier une connexion saisis ici mais qui n'existe pas 
-        //
-
         // Vérification du format de l'ancienne connexion
         String[] partiesAnciennes = ligneAncienne.split(" ");
         if (partiesAnciennes.length != 2) {
             System.out.println("Erreur: Format de connexion incorrect. Format attendu: [Entité1] [Entité2].");
+            return;
+        }
+
+        //vérifiacation si la connnexion existe
+        boolean existe = reseau.isConnexionExiste(partiesAnciennes[0], partiesAnciennes[1]);
+        if(!existe){
+            System.out.println("Erreur: La connexion '" + ligneAncienne + "' n'existe pas. Modification annulée.");
             return;
         }
         
@@ -217,7 +221,7 @@ public class InterfaceTexte {
         while (choix != 4) {
             System.out.println("\n--- Menu Gestion du Réseau ---");
             System.out.println("1) Calculer le coût du réseau électrique actuel");
-            System.out.println("2) Modifier une connexion (via Ajouter une Connexion)");
+            System.out.println("2) Modifier une connexion");
             System.out.println("3) Afficher le réseau");
             System.out.println("4) Quitter le programme");
             System.out.print("Votre choix: ");

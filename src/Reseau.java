@@ -138,6 +138,39 @@ public class Reseau {
         // }
     }
 
+    //vérifie si une connexion existe (sert seulement pour le respect de l'affichage dans le deuxième menu pour modifier une connexion)
+    public boolean isConnexionExiste(String nom1, String nom2) {
+
+        // Trouver les objets Maison et Generateur 
+        Maison m = null;
+        Generateur g = null;
+
+        if (this.maisons.containsKey(nom1) && this.generateurs.containsKey(nom2)) {
+            m = this.maisons.get(nom1);
+            g = this.generateurs.get(nom2);
+        } else if (this.maisons.containsKey(nom2) && this.generateurs.containsKey(nom1)) {
+            m = this.maisons.get(nom2);
+            g = this.generateurs.get(nom1);
+        }
+
+        // Gérer les objets non trouvés
+        // Si la maison ou le générateur n'existe même pas, la connexion est impossible.
+        if (m == null || g == null) {
+            return false;
+        }
+        
+        // Vérifier la connexion
+        // On récupère le générateur ACTUELLEMENT connecté à cette maison
+        // S'il n'y a pas de connexion, gActuel sera 'null'
+        Generateur gActuel = this.connexions.get(m);
+        
+        // La connexion existe si gActuel n'est pas nul et que gAcuel est le meme g qu'on a trouvé auparavant
+        return gActuel != null && gActuel.equals(g);
+    }
+
+    /////////////////////// 
+    // !!! CALCULS !!! ///
+    /////////////////////
     public double calculerChargeActuelle(Generateur g) {
         double charge = 0.0;
 
@@ -203,6 +236,7 @@ public class Reseau {
         return calculerDispersion() + LAMBDA * calculerSurcharge();
     }
 
+    //affichage de l'état du reseau
     public void afficherReseau() {
         System.out.println("\n==================================");
         System.out.println("||     ETAT ACTUEL DU RÉSEAU    ||");

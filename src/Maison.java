@@ -7,7 +7,7 @@ public class Maison {
         this.consommation = consommation;
     }
 
-    // Getters, Setters et autres méthodes
+    // Getters, Setters 
     public String getNom() {
         return nom;
     }
