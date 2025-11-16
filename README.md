@@ -17,12 +17,13 @@ La formule de coût utilisée est : $Cout(S) = Disp(S) + \lambda \cdot Surcharge
 Ce programme permet à un utilisateur de configurer manuellement un réseau via un menu interactif.
 
 ### Menu 1 : Configuration
-* **1) Ajouter un générateur** (nom et capacité max, ex: "G1 60")
-* **2) Ajouter une maison** (nom et type : BASSE, NORMAL, FORTE)
-* **3) Ajouter une connexion** (ex: "M1 G1")
-* **4) Fin** (Vérifie que chaque maison a une unique connexion avant de continuer)
+* **1) Ajouter/Mettre à jour un générateur** (nom et capacité max, ex: "G1 60")
+* **2) Ajouter/Mettre à jour une maison** (nom et type : BASSE, NORMAL, FORTE)
+* **3) Ajouter/Modifier une connexion** (ex: "M1 G1")
+* **4) Supprimer une connexion** (ex: "M1 G1")
+* **5) Finaliser la configuration** (Vérifie que chaque maison a une connexion avant de passer au menu de gestion)
 
-### Menu 2 : Analyse
+### Menu 2 : Analyse (Menu Gestion)
 * **1) Calculer le coût** (Affiche $Cout(S)$, $Disp(S)$ et $Surcharge(S)$ avec $\lambda = 10$)
 * **2) Modifier une connexion**
 * **3) Afficher le réseau**
