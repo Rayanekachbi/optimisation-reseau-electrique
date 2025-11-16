@@ -7,8 +7,8 @@
 Ce projet vise à développer un logiciel capable de modéliser, simuler et évaluer l'efficacité de différentes configurations pour un réseau de distribution d'électricité. L'objectif est de trouver une allocation des maisons (consommateurs) aux générateurs (sources) qui minimise un coût global.
 
 Ce coût est calculé en fonction de deux critères principaux :
-1.  **L'équilibre de la charge** (minimiser la dispersion $Disp(S)$)
-2.  **Le respect des capacités maximales** (minimiser la pénalisation $Surcharge(S)$)
+1.  **L'équilibre de la charge** (minimiser la dispersion Disp(S))
+2.  **Le respect des capacités maximales** (minimiser la pénalisation Surcharge(S))
 
 La formule de coût utilisée est : $Cout(S) = Disp(S) + \lambda \cdot Surcharge(S)$.
 
