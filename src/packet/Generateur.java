@@ -1,3 +1,4 @@
+package packet;
 public class Generateur {
     private String nom;
     private double capaciteMaximale;

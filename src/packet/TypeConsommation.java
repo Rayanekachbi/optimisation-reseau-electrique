@@ -1,3 +1,4 @@
+package packet;
 public enum TypeConsommation {
     BASSE(10), // 10 kW
     NORMAL(20), // 20 kW

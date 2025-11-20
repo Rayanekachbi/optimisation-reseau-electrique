@@ -1,3 +1,4 @@
+package packet;
 public class Connexion {
     private Maison maison;
     private Generateur generateur;
