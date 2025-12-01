@@ -1,4 +1,5 @@
 package packet;
+
 public class Maison {
     private String nom;
     private TypeConsommation consommation;

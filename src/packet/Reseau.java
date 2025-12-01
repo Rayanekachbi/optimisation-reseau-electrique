@@ -57,10 +57,25 @@ public class Reseau {
         } else if (this.maisons.containsKey(nom2) && this.generateurs.containsKey(nom1)) {
             m = this.maisons.get(nom2);
             g = this.generateurs.get(nom1);
-        }
+        } else {
+            // Si nom1 est une Maison valide, c'est que nom2 (le générateur) est faux
+            if (this.maisons.containsKey(nom1)) {
+                return "Erreur: Générateur '" + nom2 + "' introuvable.";
+            }
+            // Si nom1 est un Générateur valide, c'est que nom2 (la maison) est faux
+            if (this.generateurs.containsKey(nom1)) {
+                return "Erreur: Maison '" + nom2 + "' introuvable.";
+            }
+            // Si nom2 est une Maison valide, c'est que nom1 (le générateur) est faux
+            if (this.maisons.containsKey(nom2)) {
+                return "Erreur: Générateur '" + nom1 + "' introuvable.";
+            }
+            // Si nom2 est un Générateur valide, c'est que nom1 (la maison) est faux
+            if (this.generateurs.containsKey(nom2)) {
+                return "Erreur: Maison '" + nom1 + "' introuvable.";
+            }
 
-        if (m == null || g == null) {
-            return "Erreur: Maison ou générateur introuvable. Vérifiez que '" + nom1 + "' et '" + nom2 + "' existent.";
+            return "Erreur: Éléments '" + nom1 + "' et '" + nom2 + "' introuvables.";
         }
 
         if (this.connexions.containsKey(m)) {
@@ -101,6 +116,14 @@ public class Reseau {
 
     public java.util.List<String> validerReseau() {
         java.util.List<String> erreurs = new java.util.ArrayList<>();
+        
+        if (this.maisons.isEmpty()) {
+            erreurs.add("Problème: Le réseau doit contenir au moins une maison.");
+        }
+        if (this.generateurs.isEmpty()) {
+            erreurs.add("Problème: Le réseau doit contenir au moins un générateur.");
+        }
+        
         // La contrainte "une maison est connectée à un seul générateur au maximum"
         // est gérée par la conception de la Map et non par la méthode de validation
         // Remplacement Automatique : Si on appelle this.connexions.put(M1, G1) puis
