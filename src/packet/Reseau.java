@@ -323,4 +323,22 @@ public class Reseau {
         }
         System.out.println("==================================");
     }
+
+    // Getters et Setters
+    public Map<String, Maison> getMaisonsMap() {
+        return this.maisons;
+    }
+
+    public Map<String, Generateur> getGenerateursMap() {
+        return this.generateurs;
+    }
+
+    public Map<Maison, Generateur> getConnexionsMap() {
+        return this.connexions;
+    }
+    
+    // Permet de vider le réseau pour l'initialisation gloutonne
+    public void viderConnexions() {
+        this.connexions.clear();
+    }
 }
