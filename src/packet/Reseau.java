@@ -1,10 +1,13 @@
 package packet;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Reseau {
 
-    private static final double LAMBDA = 10.0;
+    private static double LAMBDA = 10.0;
 
     private Map<String, Maison> maisons;
     private Map<String, Generateur> generateurs;
@@ -136,32 +139,9 @@ public class Reseau {
             }
         }
         return erreurs;
-
-        // peut servire pour l'algo de deuxième partie :
-
-        // // Vérification de la surcharge des générateurs
-        // // Calculer la charge totale sur chaque générateur
-        // Map<Generateur, Double> charges = new HashMap<>();
-        // for (Maison m : this.connexions.keySet()) {
-        // Generateur g = this.connexions.get(m);
-        //
-        // // Si le générateur g est dans la Map charges, on récupère sa charge.
-        // // Sinon (si c'est la première maison connectée à g),
-        // // on prend la valeur par défaut 0.0
-        // double chargeActuelle = charges.getOrDefault(g, 0.0);
-        // charges.put(g, chargeActuelle + m.getConsommation().getDemandeKw());
-        // }
-        // // Compare la charge à la capacité maximale
-        // for (Generateur g : charges.keySet()) {
-        // double charge = charges.get(g);
-        // if (charge > g.getCapaciteMaximale()) {
-        // erreurs.add("Problème: Générateur " + g.getNom() + " est surchargé. Charge: "
-        // + charge
-        // + " kW > Capacité: " + g.getCapaciteMaximale() + " kW.");
-        // }
-        // }
     }
 
+    
     //vérifie si une connexion existe (sert seulement pour le respect de l'affichage dans le deuxième menu pour modifier une connexion)
     public boolean isConnexionExiste(String nom1, String nom2) {
 
@@ -323,7 +303,8 @@ public class Reseau {
         }
         System.out.println("==================================");
     }
-
+    
+    
     // Getters et Setters
     public Map<String, Maison> getMaisonsMap() {
         return this.maisons;
@@ -340,5 +321,68 @@ public class Reseau {
     // Permet de vider le réseau pour l'initialisation gloutonne
     public void viderConnexions() {
         this.connexions.clear();
+    }
+    
+    
+ // --- NOUVEAU : Vider le réseau avant chargement ---
+    public void viderReseau() {
+        this.maisons.clear();
+        this.generateurs.clear();
+        this.connexions.clear();
+    }
+
+    // --- NOUVEAU : Sauvegarde ---
+    public void sauvegarderReseau(String chemin) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(chemin))) {
+            
+            // 1. Écrire les générateurs
+            for (Generateur g : this.generateurs.values()) {
+                // Format : generateur(nom,capacité).
+                String ligne = String.format("generateur(%s,%.0f).", g.getNom(), g.getCapaciteMaximale());
+                writer.write(ligne);
+                writer.newLine();
+            }
+            writer.newLine(); // Saut de ligne pour faire joli
+
+            // 2. Écrire les maisons
+            for (Maison m : this.maisons.values()) {
+                // Format : maison(nom,TYPE).
+                String ligne = String.format("maison(%s,%s).", m.getNom(), m.getConsommation().toString());
+                writer.write(ligne);
+                writer.newLine();
+            }
+            writer.newLine();
+
+            // 3. Écrire les connexions
+            for (Map.Entry<Maison, Generateur> entry : this.connexions.entrySet()) {
+                // Format : connexion(maison,generateur).
+                String ligne = String.format("connexion(%s,%s).", entry.getKey().getNom(), entry.getValue().getNom());
+                writer.write(ligne);
+                writer.newLine();
+            }
+        }
+    }
+
+    // --- GETTERS POUR LA SAUVEGARDE ---
+
+    public Map<String, Generateur> getGenerateurs() {
+        return this.generateurs;
+    }
+
+    public Map<String, Maison> getMaisons() {
+        return this.maisons;
+    }
+
+    public Map<Maison, Generateur> getConnexions() {
+        return this.connexions; // Ou this.mapConnexions selon comment vous l'avez nommée
+    }
+    
+    public double getLambda() {
+    	return LAMBDA;
+    }
+    
+    public void setLambda(double L) {
+    	LAMBDA = L;
+    	
     }
 }

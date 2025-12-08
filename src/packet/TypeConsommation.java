@@ -25,4 +25,12 @@ public enum TypeConsommation {
             return null;
         }
     }
+    
+ // --- NOUVEAU : Helper pour le parsing ---
+    public static TypeConsommation fromPower(int power) {
+        if (power == 10) return BASSE;
+        if (power == 20) return NORMAL;
+        if (power == 40) return FORTE;
+        return null; // ou lancer une exception 
+    }
 }

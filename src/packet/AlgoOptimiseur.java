@@ -35,7 +35,7 @@ public class AlgoOptimiseur {
 
         // Paramètres du Recuit
         double temperature = 100.0;
-        double refroidissement = 0.99; // Diminue lentement la température
+        double refroidissement = 0.9997; // Diminue lentement la température
 
         // Conversion en listes pour accès rapide par index
         List<Maison> maisons = new ArrayList<>(reseau.getMaisonsMap().values());
