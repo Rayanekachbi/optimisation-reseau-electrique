@@ -6,36 +6,51 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Classe responsable de l'optimisation du réseau électrique.
+ * Elle utilise un algorithme de Recuit Simulé (Simulated Annealing) pour modifier
+ * les connexions entre maisons et générateurs afin de minimiser le coût total (Dispersion + Surcharge).
+ */
 public class AlgoOptimiseur {
 
     private Reseau reseau;
     private Random random;
 
+    /**
+     * Initialise l'optimiseur pour un réseau donné.
+     *
+     * @param reseau Le réseau électrique à optimiser
+     */
     public AlgoOptimiseur(Reseau reseau) {
         this.reseau = reseau;
         this.random = new Random();
     }
 
     /**
-     * Lance l'algorithme de Recuit Simulé pour optimiser le réseau.
-     * @param nbIterations Nombre d'essais (ex: 10000 ou 50000)
+     * Exécute l'algorithme d'optimisation (Recuit Simulé).
+     * L'algorithme part d'une solution gloutonne, puis explore des changements aléatoires de connexion.
+     * Il accepte parfois des solutions moins bonnes (selon la température) pour éviter les minima locaux.
+     * A la fin, la meilleure solution trouvée est appliquée au réseau.
+     *
+     * @param nbIterations Le nombre d'itérations de l'algorithme (ex: 50000, modifiable dans la methode du menu automatique)
+     * @throws ReseauException En cas d'erreur lors du calcul des coûts (ex: capacité nulle)
      */
-    public void resoudre(int nbIterations) {
-        System.out.println("Début de l'optimisation (Recuit Simulé)...");
+    public void resoudre(int nbIterations) throws ReseauException{
+        System.out.println("Début de l'optimisation ...");
 
-        // 1. Initialisation Gloutonne (Partir d'une bonne base)
+        // Initialisation Gloutonne
         initialisationIntelligente();
         
         double coutActuel = reseau.calculerCout();
         
         // On sauvegarde la MEILLEURE solution trouvée jusqu'ici
-        // (Car le recuit simulé peut parfois finir sur une solution un peu moins bonne en explorant)
+        // Car le recuit simulé peut parfois finir sur une solution un peu moins bonne en explorant
         Map<Maison, Generateur> meilleureConnexions = new HashMap<>(reseau.getConnexionsMap());
         double meilleurCout = coutActuel;
 
         // Paramètres du Recuit
         double temperature = 100.0;
-        double refroidissement = 0.9997; // Diminue lentement la température
+        double refroidissement = 0.9997; // pour diminuer lentement la température
 
         // Conversion en listes pour accès rapide par index
         List<Maison> maisons = new ArrayList<>(reseau.getMaisonsMap().values());
@@ -46,9 +61,9 @@ public class AlgoOptimiseur {
             return;
         }
 
-        // 2. Boucle principale
+        // Boucle principale
         for (int i = 0; i < nbIterations; i++) {
-            // --- A. Mutation : On change une connexion au hasard ---
+            //On change une connexion au hasard
             Maison mChoisie = maisons.get(random.nextInt(maisons.size()));
             Generateur gActuel = reseau.getConnexionsMap().get(mChoisie);
             
@@ -62,14 +77,14 @@ public class AlgoOptimiseur {
                 }
             }
 
-            // --- B. Test du nouveau coût ---
-            // On applique le changement temporairement
+            //Test du nouveau coût
+            //On applique le changement temporairement
             reseau.getConnexionsMap().put(mChoisie, gNouveau);
             double nouveauCout = reseau.calculerCout();
             
             double delta = nouveauCout - coutActuel;
 
-            // --- C. Décision (Critère de Metropolis) ---
+            //Décision (Critère de Metropolis)
             boolean accepterChangement = false;
 
             if (delta < 0) {
@@ -85,15 +100,14 @@ public class AlgoOptimiseur {
 
             if (accepterChangement) {
                 coutActuel = nouveauCout;
-                
-                // Est-ce le record absolu ?
+
                 if (coutActuel < meilleurCout) {
                     meilleurCout = coutActuel;
                     // On fait une copie de sauvegarde de cette configuration gagnante
                     meilleureConnexions = new HashMap<>(reseau.getConnexionsMap());
                 }
             } else {
-                // On annule le changement (Rollback)
+                // On annule le changement
                 if (gActuel != null) {
                     reseau.getConnexionsMap().put(mChoisie, gActuel);
                 } else {
@@ -102,15 +116,14 @@ public class AlgoOptimiseur {
                 }
             }
 
-            // --- D. Refroidissement ---
+            // Refroidissement
             temperature *= refroidissement;
             
-            // Optionnel : Arrêt si température très basse
+            //Arrêt si température très basse
             if (temperature < 0.0001) break;
         }
 
-        // 3. Restauration de la meilleure solution trouvée
-        // On remplace les connexions actuelles par le "Best of" sauvegardé
+        // Restauration de la meilleure solution trouvée
         reseau.getConnexionsMap().clear();
         reseau.getConnexionsMap().putAll(meilleureConnexions);
 
@@ -118,10 +131,17 @@ public class AlgoOptimiseur {
         System.out.println("Meilleur coût trouvé : " + String.format("%.4f", meilleurCout));
     }
 
-    // Méthode privée pour l'initialisation gloutonne
-    private void initialisationIntelligente() {
+    /**
+     * Stratégie d'initialisation gloutonne (Greedy).
+     * Trie les maisons par consommation décroissante (les plus grosses d'abord)
+     * et les connecte au générateur ayant le taux d'utilisation le plus faible à ce moment-là.
+     * Cela permet de partir d'une solution "correcte" avant de lancer le recuit simulé.
+     *
+     * @throws ReseauException Si une erreur survient lors du calcul des taux d'utilisation
+     */
+    private void initialisationIntelligente() throws ReseauException{
         // On vide tout pour repartir de zéro
-        reseau.viderConnexions();
+        reseau.getConnexionsMap().clear();
         
         List<Maison> maisonsTriees = new ArrayList<>(reseau.getMaisonsMap().values());
         // Tri décroissant : les plus grosses demandes d'abord
