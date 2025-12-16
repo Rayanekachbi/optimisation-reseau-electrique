@@ -1,4 +1,4 @@
-package packet;
+package packet.java;
 
 import java.util.ArrayList;
 import java.util.HashMap;

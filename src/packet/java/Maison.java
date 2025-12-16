@@ -1,4 +1,4 @@
-package packet;
+package packet.java;
 
 /**
  * Représente une maison (consommateur) dans le réseau électrique.

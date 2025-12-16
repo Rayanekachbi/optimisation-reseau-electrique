@@ -1,4 +1,4 @@
-package packet;
+package packet.java;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,7 +72,7 @@ public class Reseau {
      */
     public String ajouterOuMajMaison(String nom, TypeConsommation typeConsommation) throws ReseauException {
         if (nom == null || nom.trim().isEmpty()) {
-            throw new ReseauException.DonneeInvalide("Le nom de la maison ne peut pas être vide.", 0);
+            throw new ReseauException.DonneeInvalide("Le nom de la maison ne peut pas être vide.");
         }
 
         boolean existait = this.maisons.containsKey(nom);

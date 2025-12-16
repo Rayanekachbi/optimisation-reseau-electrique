@@ -1,4 +1,4 @@
-package packet;
+package packet.java;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -341,6 +341,7 @@ public class InterfaceTexte {
      * Permet de modifier une connexion existante en deux étapes :
      * 1. Vérifie que l'ancienne connexion existe.
      * 2. Demande la nouvelle connexion et l'applique (mise à jour ou création).
+     * 3. Supprime l'ancienne PUIS ajoute la nouvelle.
      */
     private void modifierConnexion() {
 
@@ -355,6 +356,9 @@ public class InterfaceTexte {
 	        	throw new ReseauException.Syntaxe("saisie de l'ancienne connexion", "[Nom1] [Nom2]", 0);
 	        }
 	
+	        String anc1 = partiesAnciennes[0];
+            String anc2 = partiesAnciennes[1];
+            
 	        // vérifiacation si la connnexion existe
 	        boolean existe = reseau.isConnexionExiste(partiesAnciennes[0], partiesAnciennes[1]);
 	        if (!existe) {
@@ -370,12 +374,20 @@ public class InterfaceTexte {
 	            throw new ReseauException.Syntaxe("saisie de la nouvelle connexion", "[Nom1] [Nom2]", 0);
 	        }
 	
-	        String nom1Nouvel = partiesNouvelles[0];
-	        String nom2Nouvel = partiesNouvelles[1];
+	        String nouv1 = partiesNouvelles[0];
+            String nouv2 = partiesNouvelles[1];
+	        
+	        boolean gardeElement1 = nouv1.equals(anc1) || nouv1.equals(anc2);
+            boolean gardeElement2 = nouv2.equals(anc1) || nouv2.equals(anc2);
+
+            if (!gardeElement1 && !gardeElement2) {
+                throw new ReseauException("La nouvelle connexion doit conserver au moins un élément (Maison ou Générateur) de l'ancienne !");
+            }
 	
+            //reseau.suppConnexion(anc1, anc2);
 	        // Le réseau.ajouterConnexion() gère la validation et la mise à jour si la
 	        // Maison existe déjà.
-	        String resultat = reseau.ajouterConnexion(nom1Nouvel, nom2Nouvel);
+	        String resultat = reseau.ajouterConnexion(nouv1 , nouv2);
 	
 	        // Afficher le résultat, comme toutes les erreurs sont gérées par les try catch il ne reste donc que le cas ou c'est une réussite
 	        System.out.println("Modification réussie: " + resultat.replace("MAJ:", "").replace("OK:", "").trim());

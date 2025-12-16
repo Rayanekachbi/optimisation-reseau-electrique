@@ -1,71 +1,78 @@
 ========================================================================
-PROJET : GESTION DE RÉSEAU ÉLECTRIQUE DE RAYANE KACHBI & MUHAMMAD ABBAS
+PROJET : GESTION DE RÉSEAU ÉLECTRIQUE
+AUTEURS : RAYANE KACHBI & MUHAMMAD ABBAS
 ========================================================================
 
 1. EXÉCUTION DU PROGRAMME
 =========================
-La classe principale contenant la méthode main est : packet.InterfaceTexte
-
 Pré-requis :
-Les fichiers sources (.java) doivent être compilés. Par exemple, si les fichiers compilés (.class) sont dans un dossier "bin" :
+- Java JDK 17 ou supérieur.
+- Bibliothèque JavaFX (si lancement hors d'un IDE configuré).
+- Les fichiers compilés (.class) doivent être dans le dossier "bin".
+- Le dossier "icones" doit être à la racine du projet pour l'affichage graphique.
 
-A. Lancement en Mode Manuel (Menu interactif) :
------------------------------------------------
-Commande : java -cp bin packet.InterfaceTexte
+A. Lancement de l'Interface Graphique (Recommandé) :
+----------------------------------------------------
+La classe principale est : packet.javafx.MainApp
 
-B. Lancement en Mode Fichier (Automatique) :
---------------------------------------------
-Commande : java -cp bin packet.InterfaceTexte <CheminFichier> <Lambda>
+Commande (si JavaFX est configuré dans le classpath) :
+java -cp bin packet.javafx.MainApp
 
-Exemple concret (comme testé) :
-java -cp bin packet.InterfaceTexte Instances-20251127/instance7.txt 10.0
+B. Lancement en Mode Texte (Console) :
+--------------------------------------
+La classe principale est : packet.java.InterfaceTexte
 
-Détail des arguments :
-- <CheminFichier> : Le chemin relatif ou absolu vers le fichier de configuration (ex: instance7.txt).
-- <Lambda> : (Optionnel) Le coefficient de pénalité pour la surcharge (double). Par défaut = 10.0.
+Commande Mode Manuel :
+java -cp bin packet.java.InterfaceTexte
+
+Commande Mode Fichier (Automatique) :
+java -cp bin packet.java.InterfaceTexte <CheminFichier> <Lambda>
+
+Exemple :
+java -cp bin packet.java.InterfaceTexte Instances-20251127/instance7.txt 10.0
 
 
 2. ALGORITHME DE RÉSOLUTION
 ===========================
-Un algorithme d'optimisation avancé a été implémenté : le Recuit Simulé (sources citées tout en bas).
-
-Il est bien plus efficace que l'approche aléatoire simple car il permet d'éviter les minima locaux. Voici son fonctionnement :
+Un algorithme d'optimisation avancé a été implémenté : le Recuit Simulé.
 
 a) Initialisation Intelligente (Gloutonne) :
-   Avant de lancer l'optimisation, le programme ne connecte pas les maisons au hasard.
-   1. Il trie les maisons par consommation décroissante (les plus gourmandes en premier).
-   2. Il connecte chaque maison au générateur ayant le taux d'utilisation le plus faible à l'instant T.
-   Cela donne une solution de départ déjà très correcte.
+   Avant de lancer l'optimisation, le programme trie les maisons par consommation décroissante et les connecte au générateur ayant le taux d'utilisation le plus faible à l'instant T.
 
 b) Recuit Simulé :
-   L'algorithme effectue ensuite une boucle (ex: 50 000 itérations) :
-   1. Perturbation : On change la connexion d'une maison au hasard vers un autre générateur.
-   2. Évaluation : On calcule la différence de coût (Delta).
-   3. Décision (Critère de Metropolis) :
-      - Si le nouveau coût est meilleur (Delta < 0) : On garde la solution.
-      - Si le nouveau coût est pire : On peut quand même l'accepter avec une probabilité dépendante de la "Température" actuelle. Cela permet de sortir des blocages.
-   4. Refroidissement : La température diminue progressivement, réduisant la probabilité d'accepter des mauvaises solutions vers la fin.
+   L'algorithme effectue une boucle (50 000 itérations) :
+   1. Perturbation : Changement aléatoire d'une connexion.
+   2. Évaluation : Calcul du Delta de coût.
+   3. Décision (Critère de Metropolis) : On accepte les améliorations, et parfois les dégradations (selon la Température) pour éviter les minima locaux.
+   4. Refroidissement : La température diminue progressivement.
 
 
 3. FONCTIONNALITÉS IMPLÉMENTÉES
 ===============================
-Toutes les fonctionnalités demandées dans le sujet ont été implémentées :
+Toutes les fonctionnalités obligatoires et les bonus (Partie 2) ont été implémentés.
 
+Fonctionnalités Principales :
 [x] Modélisation orientée objet (Maison, Generateur, Reseau).
-[x] Gestion robuste des exceptions (ReseauException avec détails et numéros de lignes).
-[x] Lecture de fichiers de configuration avec vérification de syntaxe et d'ordre.
-[x] Sauvegarde de l'état du réseau dans un fichier .txt valide.
-[x] Calculs de coûts (Charge, Taux, Dispersion, Surcharge).
-[x] Mode Manuel complet (Ajout, Modification, Suppression, Validation).
-[x] Mode Fichier avec passage d'arguments en ligne de commande.
-[x] Javadoc complète fournie pour toutes les classes.
+[x] Gestion robuste des exceptions (ReseauException).
+[x] Lecture et Sauvegarde de fichiers de configuration (.txt).
+[x] Algorithme d'optimisation (Recuit Simulé).
+[x] Calculs de coûts (Dispersion, Surcharge) avec paramètre Lambda modifiable.
 
-État actuel :
-Le programme est fonctionnel et gère les erreurs de saisie ou de logique (ex: division par zéro, fichiers introuvables) sans planter.
-Aucune fonctionnalité n'est manquante.
+Fonctionnalités Bonus (Partie 2) :
+[x] Interface Graphique JavaFX complète et intuitive.
+[x] Visualisation graphique du graphe (Noeuds et Arêtes).
+[x] Tests Unitaires complets (JUnit 5) couvrant la logique métier, la gestion de fichiers et les cas limites.
+
+4. STRUCTURE DU PROJET
+======================
+- src/packet/java/    : Contient la logique métier (Reseau, Algo, Main Console).
+- src/packet/javafx/  : Contient l'interface graphique (Vues, Main JavaFX).
+- tests/              : Contient les tests unitaires JUnit.
+- Instances-20251127/ : Contient les fichiers de test (.txt).
+- icones/             : Contient les ressources graphiques.
 
 
-4. SOURCES ET RÉFÉRENCES
+5. SOURCES ET RÉFÉRENCES
 ========================
 L'algorithme d'optimisation (Recuit Simulé) implémenté dans ce projet est basé sur les travaux de :
 

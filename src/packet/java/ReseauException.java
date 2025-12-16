@@ -1,4 +1,4 @@
-package packet;
+package packet.java;
 
 /**
  * Exception de base pour tout le projet de gestion de réseau électrique.
@@ -72,6 +72,15 @@ public class ReseauException extends Exception {
     	 */
         public DonneeInvalide(String nomDonnee, int ligne) {
             super("La " + nomDonnee + " doit être un nombre entier.", ligne);
+        }
+        
+        /**
+    	 * Signale qu'un nombre entier était attendu mais n'a pas été trouvé.
+    	 *
+    	 * @param msg Le message à afficher (maison ne peut pas etre vide)
+    	 */
+        public DonneeInvalide(String msg) {
+            super(msg);
         }
 
         /**

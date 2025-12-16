@@ -1,4 +1,4 @@
-package packet;
+package packet.java;
 
 /**
  * Représente un générateur électrique (source d'énergie) dans le réseau.
