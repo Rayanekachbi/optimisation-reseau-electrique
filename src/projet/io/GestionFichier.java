@@ -1,4 +1,4 @@
-package packet.java;
+package projet.io;
 
 import java.io.BufferedReader; 
 import java.io.FileReader;
@@ -6,6 +6,12 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
+
+import projet.exception.ReseauException;
+import projet.reseau.Generateur;
+import projet.reseau.Maison;
+import projet.reseau.Reseau;
+import projet.reseau.TypeConsommation;
 
 /**
  * Classe utilitaire pour gérer la lecture et l'écriture de fichiers.

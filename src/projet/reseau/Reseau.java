@@ -1,7 +1,9 @@
-package packet.java;
+package projet.reseau;
 
-import java.util.HashMap;
+import java.util.HashMap; 
 import java.util.Map;
+import projet.exception.ReseauException;
+
 
 public class Reseau {
 

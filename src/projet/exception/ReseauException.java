@@ -1,4 +1,4 @@
-package packet.java;
+package projet.exception;
 
 /**
  * Exception de base pour tout le projet de gestion de réseau électrique.

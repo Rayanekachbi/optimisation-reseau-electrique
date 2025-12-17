@@ -1,6 +1,6 @@
-package packet.javafx;
+package projet.interfaceFX;
 
-import java.util.ArrayList;
+import java.util.ArrayList;   
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +13,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import packet.java.Reseau;
-import packet.java.Generateur;
-import packet.java.Maison;
-import packet.java.TypeConsommation;
+import projet.reseau.Generateur;
+import projet.reseau.Maison;
+import projet.reseau.Reseau;
+import projet.reseau.TypeConsommation;
 
 
 /**

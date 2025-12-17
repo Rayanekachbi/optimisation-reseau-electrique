@@ -1,6 +1,6 @@
-package packet.javafx;
+package projet.application;
 
-import javafx.application.Application; 
+import javafx.application.Application;      
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,8 +15,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import packet.java.GestionFichier;
-import packet.java.Reseau;
+import projet.interfaceFX.InterfaceGraphique;
+import projet.io.GestionFichier;
+import projet.reseau.Reseau;
 
 import java.io.File;
 
@@ -26,7 +27,7 @@ import java.io.File;
  * Elle permet à l'utilisateur de choisir entre l'importation d'un fichier, la création manuelle
  * ou la configuration de lambda.
  */
-public class MainApp extends Application {
+public class MainGraphique extends Application {
 
     private Stage stagePrincipale;
 

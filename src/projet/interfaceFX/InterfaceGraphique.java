@@ -1,27 +1,26 @@
-package packet.javafx;
+package projet.interfaceFX;
 
-import javafx.geometry.Insets;
+import javafx.geometry.Insets;   
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import packet.java.Reseau;
-import packet.java.AlgoOptimiseur;
-import packet.java.TypeConsommation;
 
 import java.io.File;
 import javafx.application.Platform;
 import javafx.stage.FileChooser;
-import packet.java.GestionFichier;
-
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import projet.algo.AlgoOptimiseur;
+import projet.io.GestionFichier;
+import projet.reseau.Reseau;
+import projet.reseau.TypeConsommation;
 
 /**
  * Conteneur principal de l'interface graphique du réseau.
@@ -104,7 +103,7 @@ public class InterfaceGraphique extends BorderPane {
             // On lance le calcul dans un Thread séparé pour ne pas bloquer l'interface
             new Thread(() -> {
                 try {
-                    // On lance ton algorithme existant
+                    // On lance l'algorithme
                     AlgoOptimiseur algo = new AlgoOptimiseur(reseau);
                     algo.resoudre(50000); 
                     
@@ -115,7 +114,7 @@ public class InterfaceGraphique extends BorderPane {
                         
                         try {
                             double nouveauCout = reseau.calculerCout();
-                            afficherMessage("Optimisation terminée ! Nouveau coût : " + String.format("%.4f", nouveauCout), false);
+                            afficherMessage("Optimisation terminée ! Nouveau coût : " + String.format("%.9f", nouveauCout), false);
                         } catch (Exception ex) {
                             afficherMessage(ex.getMessage(), true);
                         }

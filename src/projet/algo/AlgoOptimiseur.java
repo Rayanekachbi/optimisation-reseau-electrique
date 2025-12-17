@@ -1,10 +1,15 @@
-package packet.java;
+package projet.algo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import projet.exception.ReseauException;
+import projet.reseau.Generateur;
+import projet.reseau.Maison;
+import projet.reseau.Reseau;
 
 /**
  * Classe responsable de l'optimisation du réseau électrique.

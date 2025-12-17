@@ -1,4 +1,4 @@
-package packet.java;
+package projet.reseau;
 
 /**
  * Énumération représentant les différents niveaux de consommation électrique possibles pour une maison.

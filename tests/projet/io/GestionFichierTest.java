@@ -1,7 +1,12 @@
-package packet.java;
+package projet.io;
 
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterEach;  
 import org.junit.jupiter.api.Test;
+
+import projet.exception.ReseauException;
+import projet.reseau.Reseau;
+import projet.reseau.TypeConsommation;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

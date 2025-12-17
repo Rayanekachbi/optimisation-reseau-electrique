@@ -1,7 +1,14 @@
-package packet.java;
+package projet.application;
 
-import java.util.InputMismatchException;
+import java.util.InputMismatchException;  
 import java.util.Scanner;
+
+import projet.algo.AlgoOptimiseur;
+import projet.exception.ReseauException;
+import projet.io.GestionFichier;
+import projet.reseau.Reseau;
+import projet.reseau.TypeConsommation;
+
 import java.io.IOException;
 
 /**
@@ -9,7 +16,7 @@ import java.io.IOException;
  * Elle permet de configurer le réseau manuellement ou via un fichier, 
  * de lancer les calculs de coûts et d'exécuter l'algorithme d'optimisation.
  */
-public class InterfaceTexte {
+public class MainTextuelle {
 
     private Reseau reseau;
     private Scanner scanner;
@@ -17,7 +24,7 @@ public class InterfaceTexte {
     /**
      * Initialise l'application avec un réseau vide et un scanner pour lire les entrées utilisateur.
      */
-    public InterfaceTexte() {
+    public MainTextuelle() {
         this.reseau = new Reseau();
         this.scanner = new Scanner(System.in);
     }
@@ -33,7 +40,7 @@ public class InterfaceTexte {
      * @param args Les arguments de la ligne de commande [cheminFichier, lambda]
      */
     public static void main(String[] args){
-        InterfaceTexte app = new InterfaceTexte();
+        MainTextuelle app = new MainTextuelle();
 
         if (args.length > 0) {
             String cheminFichier = args[0];
