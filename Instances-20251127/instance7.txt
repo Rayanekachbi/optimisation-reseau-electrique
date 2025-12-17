@@ -1,5 +1,5 @@
 generateur(gen1,10). 
-generateur(gen2,20).
+generateur(gen2,20). 
 generateur(gen3,30). 
 generateur(gen4,40). 
 generateur(gen5,50).

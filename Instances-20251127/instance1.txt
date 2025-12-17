@@ -7,7 +7,7 @@ generateur(gen6,90).
 maison(maison1,NORMAL). 
 maison(maison2,BASSE). 
 maison(maison3,NORMAL). 
-maison(maison4,FORTE).
+maison(maison4,FORTE). 
 maison(maison5,FORTE). 
 maison(maison6,NORMAL). 
 maison(maison7,NORMAL).
