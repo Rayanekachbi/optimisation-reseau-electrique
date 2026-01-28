@@ -3,7 +3,7 @@
 ## Description du Projet
 Ce projet a été réalisé dans le cadre du module **Programmation Avancée et Applications** de la Licence 3 Informatique (Université Paris Cité).
 
-Il s'agit de la seconde partie du projet annuel portant sur la modélisation et l'optimisation d'un réseau de distribution d'électricité. L'application, développée en **Java** avec une interface graphique **JavaFX**, permet de concevoir un réseau (générateurs, maisons, connexions), de gérer sa persistance via des fichiers, et surtout d'optimiser les connexions pour minimiser les coûts énergétiques.
+Il porte sur la modélisation et l'optimisation d'un réseau de distribution d'électricité. L'application, développée en **Java** avec une interface graphique **JavaFX**, permet de concevoir un réseau (générateurs, maisons, connexions), de gérer sa persistance via des fichiers, et surtout d'optimiser les connexions pour minimiser les coûts énergétiques.
 
 L'optimisation repose sur l'implémentation d'algorithmes avancés, notamment le **Recuit Simulé**, pour résoudre efficacement les problèmes de distribution complexe.
 
