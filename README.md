@@ -38,7 +38,7 @@ Calcul et affichage des coûts du réseau :
 
 ---
 
-## Documentation Technique (README Original)
+## Documentation Technique 
 
 **AUTEURS** : RAYANE KACHBI & MUHAMMAD ABBAS
 
